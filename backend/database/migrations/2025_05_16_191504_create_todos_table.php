@@ -17,6 +17,7 @@ return new class extends Migration
             $tabble->text('description')->nullable();
             $tabe->boolean('completed')->default(false);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
