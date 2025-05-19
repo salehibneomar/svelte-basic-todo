@@ -10,7 +10,7 @@ class Todo extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $fillable = ['title', 'description', 'completed'];
+    protected $fillable = ['title', 'description', 'is_completed'];
 
     protected $dates = ['deleted_at'];
 }
