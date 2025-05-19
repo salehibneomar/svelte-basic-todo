@@ -13,6 +13,6 @@ class Todo extends Model
     protected $fillable = ['title', 'description', 'is_completed'];
 
     protected $hidden = [
-        'delated_at'
+        'deleted_at'
     ];
 }
