@@ -4,6 +4,8 @@ namespace App\Traits;
 
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Database\Eloquent\Model;
 use App\Enums\HttpStatus;
 use \Exception;
