@@ -6,22 +6,23 @@ use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Database\Eloquent\Model;
 use App\Enums\HttpStatus;
+use \Exception;
 
 trait ApiResponserTrait
 {
     /**
      * Format the response structure.
-     *
      * @param array $status
-     * @param array $response
+     * @param mixed $response
      * @return JsonResponse
      */
-    private function formatResponse(array $status, object | array $response): JsonResponse
+    private function formatResponse($status, $response = null): JsonResponse
     {
-        return response()->json([
-            'status' => $status,
-            'data' => $response,
-        ], $status['code']);
+        $responseArray['status'] = $status;
+        if($response!==null){
+            $responseArray['data'] = $response;
+        }
+        return response()->json($responseArray, $status['code']);
     }
 
     /**
@@ -62,16 +63,26 @@ trait ApiResponserTrait
      * @param HttpStatus $status
      * @return JsonResponse
      */
-
-    protected function listDataResponse(LengthAwarePaginator $list, HttpStatus $status = HttpStatus::OK, string $customMessage = null): JsonResponse
+    protected function listDataResponse(LengthAwarePaginator $list, HttpStatus $status = HttpStatus::OK): JsonResponse
     {
         return $this->formatResponse(
             [
                 'code' => $status->value,
                 'name' => $status->name,
-                'message' => $customMessage ?? $status->message(),
             ],
             $list,
         );
+    }
+
+    protected function errorResponse(Exception $e, HttpStatus $status = HttpStatus::INTERNAL_SERVER_ERROR): JsonResponse
+    {
+        return response()->json([
+            'status' => [
+                'code' => $status->value,
+                'name' => $status->name,
+                'message' => $e->getMessage(),
+                'trace' => basename($e->getFile()) . ': ' . $e->getLine()
+            ],
+        ], $status->value);
     }
 }
