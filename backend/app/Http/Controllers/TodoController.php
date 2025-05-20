@@ -21,12 +21,30 @@ class TodoController extends Controller
         $this->todoService = $todoService;
     }
 
+    public function index(Request $request): JsonResponse
+    {
+        try {
+            $todos = $this->todoService->getAllTodos($request);
+            return $this->listDataResponse($todos);
+        } catch (Exception $e) {
+            return response()->json([
+                'status' => [
+                    'code' => HttpStatus::INTERNAL_SERVER_ERROR->value,
+                    'name' => HttpStatus::INTERNAL_SERVER_ERROR->name,
+                    'message' => $e->getMessage(),
+                    'trace' => basename($e->getFile()) . ': ' . $e->getLine()
+                ],
+            ], HttpStatus::INTERNAL_SERVER_ERROR->value);
+        }
+    }
+
     /**
      * Display the specified Todo resource.
      *
      * @param int $id The ID of the Todo resource.
      * @return \Illuminate\Http\JsonResponse
      */
+
     public function show($id): JsonResponse
     {
         try {
