@@ -12,7 +12,8 @@ trait ApiResponserTrait
 {
     /**
      * Format the response structure.
-     *
+     * @param array $status
+     * @param mixed $response
      * @return JsonResponse
      */
     private function formatResponse($status, $response = null): JsonResponse
