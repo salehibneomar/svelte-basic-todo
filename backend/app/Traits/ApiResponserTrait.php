@@ -2,8 +2,9 @@
 
 namespace App\Traits;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Database\Eloquent\Model;
 use App\Enums\HttpStatus;
 
 trait ApiResponserTrait
@@ -15,11 +16,11 @@ trait ApiResponserTrait
      * @param array $response
      * @return JsonResponse
      */
-    private function formatResponse(array $status, array $response): JsonResponse
+    private function formatResponse(array $status, object | array $response): JsonResponse
     {
         return response()->json([
             'status' => $status,
-            'response' => $response,
+            'data' => $response,
         ], $status['code']);
     }
 
@@ -43,7 +44,6 @@ trait ApiResponserTrait
      */
     protected function singleModelResponse(Model $data, HttpStatus $status = HttpStatus::OK, string $customMessage = null): JsonResponse
     {
-        $modelName = $this->getModelName($data);
 
         return $this->formatResponse(
             [
@@ -51,10 +51,27 @@ trait ApiResponserTrait
                 'name' => $status->name,
                 'message' => $customMessage ?? $status->message(),
             ],
+            $data,
+        );
+    }
+
+    /**
+     * Return a JSON response for a List of Data.
+     *
+     * @param LengthAwarePaginator $list
+     * @param HttpStatus $status
+     * @return JsonResponse
+     */
+
+    protected function listDataResponse(LengthAwarePaginator $list, HttpStatus $status = HttpStatus::OK, string $customMessage = null): JsonResponse
+    {
+        return $this->formatResponse(
             [
-                'data' => $data,
-                'model' => $modelName,
-            ]
+                'code' => $status->value,
+                'name' => $status->name,
+                'message' => $customMessage ?? $status->message(),
+            ],
+            $list,
         );
     }
 }
