@@ -9,7 +9,6 @@ use App\Models\Todo;
 
 class TodoService
 {
-
     public function getAllTodos(Request $request): LengthAwarePaginator
     {
         $params = $request->all();

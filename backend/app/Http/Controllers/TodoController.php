@@ -15,7 +15,6 @@ class TodoController extends Controller
 
     protected $todoService;
 
-
     public function __construct(TodoService $todoService)
     {
         $this->todoService = $todoService;

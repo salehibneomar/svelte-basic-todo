@@ -62,8 +62,6 @@ trait ApiResponserTrait
      * @param HttpStatus $status
      * @return JsonResponse
      */
-
-
     protected function listDataResponse(LengthAwarePaginator $list, HttpStatus $status = HttpStatus::OK): JsonResponse
     {
         return $this->formatResponse(
