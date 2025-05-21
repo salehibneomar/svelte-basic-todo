@@ -22,7 +22,7 @@ class BaseRequest extends FormRequest
      */
     protected function failedValidation(Validator $validator)
     {
-        $exception = new \Exception();
+        $exception = new \Exception('Validation Failed');
         $response = $this->errorResponse($exception, HttpStatus::UNPROCESSABLE_ENTITY, $validator->errors());
 
         throw new ValidationException($validator, $response);
