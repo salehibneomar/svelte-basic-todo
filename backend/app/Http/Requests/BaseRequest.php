@@ -23,7 +23,6 @@ class BaseRequest extends FormRequest
      *
      * This method is triggered when validation fails for a request. It overrides the default behavior
      * to provide a custom error response using the `errorResponse` method from the ApiResponserTrait.
-     *
      * @param Validator
      * @throws ValidationException
      */
