@@ -12,6 +12,8 @@ enum HttpStatus: int
     case FORBIDDEN = 403;
     case NOT_FOUND = 404;
     case INTERNAL_SERVER_ERROR = 500;
+    case UNPROCESSABLE_ENTITY = 422;
+    case CONFLICT = 409;
 
     public function message(): string
     {
@@ -24,6 +26,8 @@ enum HttpStatus: int
             self::FORBIDDEN => 'forbidden',
             self::NOT_FOUND => 'not found',
             self::INTERNAL_SERVER_ERROR => 'internal server error',
+            self::UNPROCESSABLE_ENTITY => 'unprocessable entity',
+            self::CONFLICT => 'conflict',
         };
     }
 }
