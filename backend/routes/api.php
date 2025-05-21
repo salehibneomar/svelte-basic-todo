@@ -11,4 +11,5 @@ Route::controller(TodoController::class)
     ->group(function () {
         Route::get('/', 'index')->name('index');
         Route::get('/{id}', 'show')->name('show');
+        Route::delete('/{id}', 'destroy')->name('destroy');
     });

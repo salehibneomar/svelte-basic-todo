@@ -19,4 +19,10 @@ class TodoService
         return Todo::findOrFail($id);
     }
 
+    public function deleteTodoById(int $id) : Todo {
+        $todo = Todo::findOrFail($id);
+        $todo->delete();
+        return $todo;
+    }
+
 }

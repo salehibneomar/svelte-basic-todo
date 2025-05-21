@@ -47,4 +47,14 @@ class TodoController extends Controller
         }
     }
 
+    public function destroy($id): JsonResponse
+    {
+        try {
+            $todo = $this->todoService->deleteTodoById($id);
+            return $this->singleModelResponse($todo, HttpStatus::NO_CONTENT);
+        } catch (Exception $e) {
+            return $this->errorResponse($e, HttpStatus::NOT_FOUND);
+        }
+    }
+
 }
