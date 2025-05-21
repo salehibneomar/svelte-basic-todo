@@ -9,6 +9,7 @@ use \Exception;
 use App\Traits\ApiResponserTrait;
 use App\Enums\HttpStatus;
 use App\Enums\CrudStatus;
+use App\Http\Requests\TodoRequest;
 
 class TodoController extends Controller
 {
@@ -48,6 +49,15 @@ class TodoController extends Controller
             return $this->singleModelResponse($todo, HttpStatus::OK, CrudStatus::DELETED->value);
         } catch (Exception $e) {
             return $this->errorResponse($e, HttpStatus::NOT_FOUND);
+        }
+    }
+
+    public function store(TodoRequest $request) : JsonResponse {
+        try {
+            $todo = $this->todoService->createTodo($request->validated());
+            return $this->singleModelResponse($todo, HttpStatus::CREATED, CrudStatus::CREATED->value);
+        } catch (Exception $e) {
+            return $this->errorResponse($e, HttpStatus::INTERNAL_SERVER_ERROR);
         }
     }
 

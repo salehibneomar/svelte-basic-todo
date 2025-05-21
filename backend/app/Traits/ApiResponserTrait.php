@@ -74,13 +74,13 @@ trait ApiResponserTrait
         );
     }
 
-    protected function errorResponse(Exception $e, HttpStatus $status = HttpStatus::INTERNAL_SERVER_ERROR): JsonResponse
+    protected function errorResponse(Exception $e, HttpStatus $status = HttpStatus::INTERNAL_SERVER_ERROR, $customMessage = null): JsonResponse
     {
         return response()->json([
             'status' => [
                 'code' => $status->value,
                 'name' => $status->name,
-                'message' => $e->getMessage(),
+                'message' => $customMessage ?? $e->getMessage(),
                 'trace' => basename($e->getFile()) . ': ' . $e->getLine()
             ],
         ], $status->value);
