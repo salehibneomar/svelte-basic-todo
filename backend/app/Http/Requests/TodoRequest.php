@@ -29,8 +29,10 @@ class TodoRequest extends BaseRequest
      */
     public function rules(): array
     {
+        $titleCommonRule = 'string|min:3|max:255';
+        $titleRule = request()->isMethod('PATCH') ? 'sometimes|'.$titleCommonRule : 'required|'.$titleCommonRule;
         return [
-            'title' => 'required|string|min:3|max:255',
+            'title' =>  $titleRule,
             'description' => 'nullable|string',
             'is_completed' => 'nullable|boolean',
         ];

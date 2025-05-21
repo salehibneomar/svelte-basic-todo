@@ -42,6 +42,25 @@ class TodoController extends Controller
         }
     }
 
+    public function store(TodoRequest $request) : JsonResponse {
+        try {
+            $todo = $this->todoService->createTodo($request->validated());
+            return $this->singleModelResponse($todo, HttpStatus::CREATED, CrudStatus::CREATED->value);
+        } catch (Exception $e) {
+            return $this->errorResponse($e, HttpStatus::INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function update(TodoRequest $request, $id): JsonResponse
+    {
+        try {
+            $todo = $this->todoService->updateTodoById($id, $request->validated());
+            return $this->singleModelResponse($todo, HttpStatus::OK, CrudStatus::UPDATED->value);
+        } catch (Exception $e) {
+            return $this->errorResponse($e, HttpStatus::NOT_FOUND);
+        }
+    }
+
     public function destroy($id): JsonResponse
     {
         try {
@@ -49,15 +68,6 @@ class TodoController extends Controller
             return $this->singleModelResponse($todo, HttpStatus::OK, CrudStatus::DELETED->value);
         } catch (Exception $e) {
             return $this->errorResponse($e, HttpStatus::NOT_FOUND);
-        }
-    }
-
-    public function store(TodoRequest $request) : JsonResponse {
-        try {
-            $todo = $this->todoService->createTodo($request->validated());
-            return $this->singleModelResponse($todo, HttpStatus::CREATED, CrudStatus::CREATED->value);
-        } catch (Exception $e) {
-            return $this->errorResponse($e, HttpStatus::INTERNAL_SERVER_ERROR);
         }
     }
 
