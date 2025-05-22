@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { goto } from '$app/navigation'
+
 	// Svelte page component
 </script>
 
@@ -23,11 +25,14 @@
 		<li
 			class="flex items-center justify-between rounded bg-slate-100 px-4 py-2 transition-colors hover:bg-slate-200"
 		>
-			<div class="flex items-center gap-2">
-				<input type="checkbox" class="accent-slate-700" />
+			<input type="checkbox" class="mr-2 accent-slate-700" />
+			<!-- Clickable link area -->
+			<a href="/todo/1" class="flex flex-1 items-center">
 				<span class="text-slate-700">Buy groceries</span>
-			</div>
-			<button class="cursor-pointer text-red-500 hover:text-red-700" aria-label="Delete todo">
+			</a>
+
+			<!-- Delete button outside the link -->
+			<button class="ml-4 cursor-pointer text-red-500 hover:text-red-700" aria-label="Delete todo">
 				<i class="fa-solid fa-trash"></i>
 			</button>
 		</li>
@@ -35,7 +40,7 @@
 			class="flex items-center justify-between rounded bg-slate-100 px-4 py-2 transition-colors hover:bg-slate-200"
 		>
 			<div class="flex items-center gap-2">
-				<input type="checkbox" class="accent-slate-700" checked />
+				<input type="checkbox" class="ml-2 accent-slate-700" checked />
 				<span class="text-slate-400 line-through">Read a book</span>
 			</div>
 			<button class="cursor-pointer text-red-500 hover:text-red-700" aria-label="Delete todo">
@@ -46,7 +51,7 @@
 			class="flex items-center justify-between rounded bg-slate-100 px-4 py-2 transition-colors hover:bg-slate-200"
 		>
 			<div class="flex items-center gap-2">
-				<input type="checkbox" class="accent-slate-700" />
+				<input type="checkbox" class="ml-2 accent-slate-700" />
 				<span class="text-slate-700">Walk the dog</span>
 			</div>
 			<button class="cursor-pointer text-red-500 hover:text-red-700" aria-label="Delete todo">
