@@ -1,7 +1,16 @@
 <script lang="ts">
-	import { goto } from '$app/navigation'
 
-	console.log(import.meta.env.VITE_SIO_API_BASE_URL)
+	import  axios from 'axios'
+	import { onMount } from 'svelte'
+	const baseURL = import.meta.env.VITE_API_BASE_URL
+	const resource = 'todos'
+	const headers = {
+		'Content-Type': 'application/json',
+	}
+	onMount(async () => {
+		const response = await axios.get(`${baseURL}${resource}`, { headers })
+		console.log(response.data)
+	})
 	// Svelte page component
 </script>
 
