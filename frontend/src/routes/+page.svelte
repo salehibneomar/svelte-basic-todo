@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { goto } from '$app/navigation'
 
+	console.log(import.meta.env.VITE_SIO_API_BASE_URL)
 	// Svelte page component
 </script>
 
