@@ -1,17 +1,6 @@
 <script lang="ts">
-
-	import  axios from 'axios'
-	import { onMount } from 'svelte'
-	const baseURL = import.meta.env.VITE_API_BASE_URL
-	const resource = 'todos'
-	const headers = {
-		'Content-Type': 'application/json',
-	}
-	onMount(async () => {
-		const response = await axios.get(`${baseURL}${resource}`, { headers })
-		console.log(response.data)
-	})
-	// Svelte page component
+	export let data: { todos: any[] }
+	let todos = [...data.todos]
 </script>
 
 <div class="mx-auto mt-10 max-w-xl rounded-lg bg-white p-8 shadow-lg">
@@ -32,42 +21,19 @@
 	</form>
 
 	<ul class="space-y-3">
-		<li
-			class="flex items-center justify-between rounded bg-slate-100 px-4 py-2 transition-colors hover:bg-slate-200"
-		>
-			<input type="checkbox" class="mr-2 accent-slate-700" />
-			<!-- Clickable link area -->
-			<a href="/todo/1" class="flex flex-1 items-center">
-				<span class="text-slate-700">Buy groceries</span>
-			</a>
-
-			<!-- Delete button outside the link -->
-			<button class="ml-4 cursor-pointer text-red-500 hover:text-red-700" aria-label="Delete todo">
-				<i class="fa-solid fa-trash"></i>
-			</button>
-		</li>
-		<li
-			class="flex items-center justify-between rounded bg-slate-100 px-4 py-2 transition-colors hover:bg-slate-200"
-		>
-			<div class="flex items-center gap-2">
-				<input type="checkbox" class="ml-2 accent-slate-700" checked />
-				<span class="text-slate-400 line-through">Read a book</span>
-			</div>
-			<button class="cursor-pointer text-red-500 hover:text-red-700" aria-label="Delete todo">
-				<i class="fa-solid fa-trash"></i>
-			</button>
-		</li>
-		<li
-			class="flex items-center justify-between rounded bg-slate-100 px-4 py-2 transition-colors hover:bg-slate-200"
-		>
-			<div class="flex items-center gap-2">
-				<input type="checkbox" class="ml-2 accent-slate-700" />
-				<span class="text-slate-700">Walk the dog</span>
-			</div>
-			<button class="cursor-pointer text-red-500 hover:text-red-700" aria-label="Delete todo">
-				<i class="fa-solid fa-trash"></i>
-			</button>
-		</li>
+		{#each todos as todo}
+			<li
+				class="flex items-center justify-between rounded bg-slate-100 px-4 py-2 transition-colors hover:bg-slate-200"
+			>
+				<div class="flex items-center gap-2">
+					<input type="checkbox" class="ml-2 accent-slate-700" checked={todo.is_completed} />
+					<span class={todo.is_completed ? 'text-slate-400 line-through' : 'text-slate-700'}>{todo.title}</span>
+				</div>
+				<button class="cursor-pointer text-red-500 hover:text-red-700" aria-label="Delete todo">
+					<i class="fa-solid fa-trash"></i>
+				</button>
+			</li>
+		{/each}
 	</ul>
 
 	<!-- Pagination -->
