@@ -11,7 +11,6 @@
 
 	const { todos } = todoStore;
 
-
 	onMount(async () => {
 		await getAllTodos();
 		loading = false;
