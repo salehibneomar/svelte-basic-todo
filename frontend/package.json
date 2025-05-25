@@ -14,7 +14,7 @@
 		"lint": "prettier --check . && eslint .",
 		"test:unit": "vitest",
 		"test": "npm run test:unit -- --run",
-		"dev:web": "pnpm run dev"
+		"fire": "pnpm run dev && lint"
 	},
 	"devDependencies": {
 		"@eslint/compat": "^1.2.5",
