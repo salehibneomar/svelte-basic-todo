@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte'
 	import todoStore from '$lib/stores/todo-store'
+	import { goto } from '$app/navigation'
 	import type { PaginationModel } from '$lib/types/pagination'
 	import type { TodoBaseModel, TodoModel } from '$lib/types/todo'
 
@@ -86,24 +87,29 @@
 			<ul class="space-y-3">
 				{#each $todos as todo}
 					<li
-						class="flex items-center justify-between rounded bg-slate-100 px-4 py-2 transition-colors hover:bg-slate-200"
+						class="flex items-center justify-between rounded bg-slate-100 px-4 py-0 transition-colors hover:bg-slate-200"
 					>
-						<div class="flex items-center gap-2">
-							<input
-								type="checkbox"
-								class="ml-2 accent-slate-700"
-								checked={Boolean(todo?.is_completed)}
-								on:change|capture={(e) => {
-									const isCompleted = (e.target as HTMLInputElement).checked
-									onTodoStatusChange(todo?.id, isCompleted)
-								}}
-							/>
-							<span class={todo?.is_completed ? 'text-slate-400 line-through' : 'text-slate-700'}
-								>{todo?.title}</span
-							>
-						</div>
+						<input
+							type="checkbox"
+							class="accent-slate-700"
+							checked={Boolean(todo?.is_completed)}
+							on:change={(e) => {
+								const isCompleted = (e.target as HTMLInputElement).checked
+								onTodoStatusChange(todo?.id, isCompleted)
+							}}
+							tabindex="-1"
+						/>
 						<button
-							on:click|capture={() => onDeleteTodo(todo?.id as number)}
+							type="button"
+							class="ml-3 flex flex-1 cursor-pointer items-center gap-2 border-none bg-transparent py-2 text-left focus:outline-none"
+							on:click={() => goto(`/todo/${todo.id}`)}
+						>
+							<span class={todo?.is_completed ? 'text-slate-400 line-through' : 'text-slate-700'}>
+								{todo?.title}
+							</span>
+						</button>
+						<button
+							on:click={() => onDeleteTodo(todo?.id as number)}
 							class="cursor-pointer text-red-500 hover:text-red-700"
 							aria-label="Delete todo"
 						>
