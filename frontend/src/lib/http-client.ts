@@ -3,6 +3,12 @@ import axios from 'axios'
 import type { AxiosInstance, AxiosResponse } from 'axios'
 
 const baseURL: string = import.meta.env.VITE_API_BASE_URL as string
+const showSuccessToastFor: Record<string, boolean> = {
+	POST: true,
+	PUT: true,
+	PATCH: true,
+	DELETE: true
+}
 
 const HttpClient = (): AxiosInstance => {
 	const instance = axios.create({
@@ -16,13 +22,8 @@ const HttpClient = (): AxiosInstance => {
 	instance.interceptors?.response?.use(
 		(response: AxiosResponse) => {
 			const HTTP_METHOD: string = response.config.method?.toUpperCase() ?? ''
-			const showToastFor: Record<string, true> = {
-				POST: true,
-				PUT: true,
-				PATCH: true,
-				DELETE: true
-			}
-			if (showToastFor[HTTP_METHOD]) {
+
+			if (showSuccessToastFor[HTTP_METHOD]) {
 				const message = response.data?.status?.message ?? 'Request successful!'
 				toasts.success(message)
 			}
