@@ -12,8 +12,8 @@ export const createTodo = async (todo: TodoBaseModel) => {
 	return await HttpClient().post(MODEL, todo)
 }
 
-export const updateTodo = async (id: string | number, todo: TodoModel) => {
-	return await HttpClient().patch(`${MODEL}/${id}`, todo)
+export const updateTodo = async (todo: TodoModel) => {
+	return await HttpClient().patch(`${MODEL}/${todo.id}`, todo)
 }
 
 export const deleteTodo = async (id: string | number) => {

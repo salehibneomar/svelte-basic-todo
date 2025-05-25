@@ -24,7 +24,7 @@ class TodoService
     {
         $todo = new Todo();
         $todo->fill([
-            'title' => $data['title'],
+            'title' => trim($data['title']),
             'description' => $data['description'] ?? null,
             'is_completed' => $data['is_completed'] ?? 0,
         ])->save();

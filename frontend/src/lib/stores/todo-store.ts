@@ -37,10 +37,19 @@ const create = async (newTodo: TodoBaseModel) => {
 	return null
 }
 
-const update = (updatedTodo: TodoModel) => {
-	todos.update((current) =>
-		current.map((todo) => (+todo.id === +updatedTodo.id ? updatedTodo : todo))
-	)
+const update = async (paylod: TodoModel) => {
+	try {
+		const { data } = await todoService.updateTodo(paylod)
+		const { status, data: updatedTodo } = data
+		if (+status?.code === 200) {
+			todos.update((current) =>
+				current.map((todo) => (+todo.id === +updatedTodo.id ? updatedTodo : todo))
+			)
+		}
+		return { status, updatedTodo }
+	} catch (error) {
+		console.error('Error updating todo:', error)
+	}
 }
 
 const remove = async (id: number | string) => {
