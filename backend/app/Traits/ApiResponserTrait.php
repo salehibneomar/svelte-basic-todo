@@ -49,13 +49,17 @@ trait ApiResponserTrait
 
     protected function errorResponse(Exception $e, HttpStatus $status = HttpStatus::INTERNAL_SERVER_ERROR, $customMessage = null): JsonResponse
     {
+        $debug = config('app.debug');
+        $statusArr = [
+            'code' => $status->value,
+            'message' => $status->message(),
+        ];
+        if ($debug) {
+            $statusArr['trace'] = basename($e->getFile()) . ': ' . $e->getLine();
+            $statusArr['trace_message'] = $customMessage ?? $e->getMessage();
+        }
         return response()->json([
-            'status' => [
-                'code' => $status->value,
-                'name' => $status->name,
-                'message' => $customMessage ?? $e->getMessage(),
-                'trace' => basename($e->getFile()) . ': ' . $e->getLine()
-            ],
+            'status' => $statusArr,
         ], $status->value);
     }
 }
