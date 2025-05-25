@@ -2,7 +2,7 @@
 	import { onMount } from 'svelte'
 	import todoStore from '$lib/stores/todo-store'
 	import type { PaginationModel } from '$lib/types/pagination'
-	import type { TodoBaseModel } from '$lib/types/todo'
+	import type { TodoBaseModel, TodoModel } from '$lib/types/todo'
 
 	let { todos } = todoStore
 
@@ -43,11 +43,16 @@
 		submitting = false
 	}
 
-	let deletingId: number | null = null
 	const onDeleteTodo = async (id: number) => {
-		deletingId = id
 		const response = await todoStore.remove(id)
-		deletingId = null
+	}
+
+	const onTodoStatusChange = async (id: number | string, is_completed: boolean) => {
+		const payload = {
+			id,
+			is_completed
+		} as TodoModel
+		const response = await todoStore.update(payload)
 	}
 </script>
 
@@ -88,6 +93,10 @@
 								type="checkbox"
 								class="ml-2 accent-slate-700"
 								checked={Boolean(todo?.is_completed)}
+								on:change|capture={(e) => {
+									const isCompleted = (e.target as HTMLInputElement).checked
+									onTodoStatusChange(todo?.id, isCompleted)
+								}}
 							/>
 							<span class={todo?.is_completed ? 'text-slate-400 line-through' : 'text-slate-700'}
 								>{todo?.title}</span
@@ -97,7 +106,6 @@
 							on:click|capture={() => onDeleteTodo(todo?.id as number)}
 							class="cursor-pointer text-red-500 hover:text-red-700"
 							aria-label="Delete todo"
-							disabled={deletingId === todo?.id}
 						>
 							<i class="fa-solid fa-trash"></i>
 						</button>
