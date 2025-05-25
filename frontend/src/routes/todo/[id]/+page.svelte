@@ -2,7 +2,6 @@
 	import { onMount } from 'svelte'
 	import { page } from '$app/state'
 	import todoStore from '$lib/stores/todo-store'
-	import type { TodoModel } from '$lib/types/todo'
 
 	const paramTodoId = page.params.id
 
