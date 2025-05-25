@@ -8,7 +8,7 @@
 
 	let { todo } = todoStore
 
-	let loading = true
+	let loading = $state(true)
 	onMount(async () => {
 		await todoStore.getById(paramTodoId)
 		loading = false

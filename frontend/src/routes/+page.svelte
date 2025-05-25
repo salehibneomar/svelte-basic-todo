@@ -3,21 +3,23 @@
 	import todoStore from '$lib/stores/todo-store'
 	import type { PaginationModel } from '$lib/types/pagination'
 	import type { TodoBaseModel, TodoModel } from '$lib/types/todo'
+	import { Button, Modal } from "flowbite-svelte";
+  	import { ExclamationCircleOutline } from "flowbite-svelte-icons";
 
-	import TodoListItem from '$lib/components/todo/TodoListItem.svelte';
+	import TodoListItem from '$lib/components/todo/TodoListItem.svelte'
 
 	let { todos } = todoStore
 
-	let pagingData: PaginationModel = {
+	let pagingData: PaginationModel = $state({
 		current_page: 1,
 		per_page: 10
-	} as PaginationModel
+	} as PaginationModel)
 
-	let formData: TodoBaseModel = {
+	let formData: TodoBaseModel = $state({
 		title: ''
-	}
+	})
 
-	let loading = true
+	let loading = $state(true)
 	onMount(async () => {
 		await getAllTodos()
 		loading = false
@@ -35,7 +37,7 @@
 		}
 	}
 
-	let submitting = false
+	let submitting = $state(false)
 	const onSubmitForm = async () => {
 		submitting = true
 		const response = await todoStore.create(formData)
@@ -45,10 +47,6 @@
 		submitting = false
 	}
 
-	const onTodoDelete = async (id: number) => {
-		await todoStore.remove(id)
-	}
-
 	const onTodoStatusChange = async (id: number, is_completed: boolean) => {
 		const payload = {
 			id,
@@ -56,13 +54,26 @@
 		} as TodoModel
 		await todoStore.update(payload)
 	}
+
+	let toBeDeletedTodoId : number | null = $state(null)
+	const onTodoDelete = async (id: number) => {
+		toBeDeletedTodoId = id
+		popupModal = true
+		
+	}
+
+	const deleteTodo = async() => {
+		await todoStore.remove(toBeDeletedTodoId as number)
+	}
+
+	let popupModal = $state(false)
 </script>
 
 <div class="mx-auto mt-10 max-w-xl rounded-lg bg-white p-8 shadow-lg">
 	{#if !loading}
 		<h1 class="mb-6 text-center text-3xl font-bold text-slate-800">Todo List</h1>
 
-		<form class="mb-6 flex gap-2" on:submit|preventDefault={onSubmitForm}>
+		<form class="mb-6 flex gap-2" onsubmit={onSubmitForm}>
 			<input
 				type="text"
 				placeholder="Add a new todo..."
@@ -137,3 +148,14 @@
 		<p class="text-center text-slate-500">Loading todos...</p>
 	{/if}
 </div>
+
+<Modal bind:open={popupModal} size="xs" autoclose>
+  <div class="text-center">
+    <ExclamationCircleOutline class="mx-auto mb-4 h-12 w-12 text-gray-400 dark:text-gray-200" />
+    <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+		Are you sure you want to delete?
+	</h3> 
+	<Button  onclick={deleteTodo} color="red" class="cursor-pointer me-2" >Okay</Button>
+	<Button color="alternative" class="cursor-pointer">Cancel</Button>
+  </div>
+</Modal>
