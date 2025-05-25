@@ -10,39 +10,19 @@ use \Exception;
 
 trait ApiResponserTrait
 {
-    /**
-     * Format the response structure.
-     * @param array $status
-     * @param mixed $response
-     * @return JsonResponse
-     */
     private function formatResponse($status, $response = null): JsonResponse
     {
-        $responseArray['status'] = $status;
-        if($response!==null){
-            $responseArray['data'] = $response;
-        }
-        return response()->json($responseArray, $status['code']);
+        return response()->json([
+            'status' => $status,
+            'data' => $response,
+        ], $status['code']);
     }
 
-    /**
-     * Dynamically get the model name from the given data.
-     *
-     * @param Model $data
-     * @return string
-     */
     private function getModelName(Model $data): string
     {
         return class_basename($data);
     }
 
-    /**
-     * Return a JSON response for a Single Data.
-     *
-     * @param Model $data
-     * @param HttpStatus $status
-     * @return JsonResponse
-     */
     protected function singleModelResponse(Model $data, HttpStatus $status = HttpStatus::OK, string $customMessage = null): JsonResponse
     {
 
@@ -56,13 +36,6 @@ trait ApiResponserTrait
         );
     }
 
-    /**
-     * Return a JSON response for a List of Data.
-     *
-     * @param LengthAwarePaginator $list
-     * @param HttpStatus $status
-     * @return JsonResponse
-     */
     protected function listDataResponse(LengthAwarePaginator $list, HttpStatus $status = HttpStatus::OK): JsonResponse
     {
         return $this->formatResponse(

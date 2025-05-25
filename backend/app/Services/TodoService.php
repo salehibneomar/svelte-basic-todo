@@ -8,32 +8,18 @@ use Illuminate\Support\Arr;
 
 class TodoService
 {
-    /**
-     * Get all todos with pagination.
-     * @param Request
-     * @return LengthAwarePaginator
-     */
     public function getAllTodos(Request $request): LengthAwarePaginator
     {
         $params = $request->all();
-        return Todo::paginate($params['per_page'] ?? 10);
+        return Todo::orderBy('id', 'desc')
+                    ->paginate($params['per_page'] ?? 10);
     }
 
-    /**
-     * Get a todo by ID.
-     * @param int
-     * @return Todo
-     */
     public function getTodoById(int $id): Todo
     {
         return Todo::findOrFail($id);
     }
 
-    /**
-     * Create a new todo.
-     * @param array
-     * @return Todo
-     */
     public function createTodo(array $data): Todo
     {
         $todo = new Todo();
@@ -45,11 +31,6 @@ class TodoService
         return $todo;
     }
 
-    /**
-     * Update a todo by ID
-     * @param array
-     * @return Todo
-     */
     public function updateTodoById(int $id, array $data) : Todo {
         $todo = Todo::findOrFail($id);
         $filteredData = Arr::only($data, $todo->getFillable());
@@ -57,11 +38,6 @@ class TodoService
         return $todo;
     }
 
-    /**
-     * Delete a todo by ID.
-     * @param int
-     * @return Todo
-     */
     public function deleteTodoById(int $id): Todo
     {
         $todo = Todo::findOrFail($id);
