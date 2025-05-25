@@ -8,6 +8,10 @@ export const getAllTodos = async (query: QueryObject) => {
 	return await HttpClient().get(`${MODEL}${objectToApiQuery(query)}`)
 }
 
+export const getTodoById = async (id: string | number) => {
+	return await HttpClient().get(`${MODEL}/${id}`)
+}
+
 export const createTodo = async (todo: TodoBaseModel) => {
 	return await HttpClient().post(MODEL, todo)
 }

@@ -4,6 +4,7 @@ import type { QueryObject } from '$lib/types/query'
 import type { TodoBaseModel, TodoModel } from '$lib/types/todo'
 
 const todos = writable<TodoModel[]>([])
+const todo = writable<TodoModel | null>(null)
 
 const getAll = async (query: QueryObject = {} as QueryObject) => {
 	try {
@@ -15,6 +16,20 @@ const getAll = async (query: QueryObject = {} as QueryObject) => {
 		return response
 	} catch (error) {
 		console.error('Error fetching todos:', error)
+	}
+	return null
+}
+
+const getById = async (id: number | string) => {
+	try {
+		const { data } = await todoService.getTodoById(id)
+		const { status, data: response } = data
+		if (+status?.code === 200) {
+			todo.set(response as TodoModel)
+		}
+		return response
+	} catch (error) {
+		console.error('Error fetching todo by ID:', error)
 	}
 	return null
 }
@@ -68,7 +83,9 @@ const remove = async (id: number | string) => {
 
 export default {
 	todos,
+	todo,
 	getAll,
+	getById,
 	create,
 	update,
 	remove
