@@ -4,7 +4,7 @@ import type { QueryObject } from '$lib/types/query'
 import type { TodoBaseModel, TodoModel } from '$lib/types/todo'
 
 const todos = writable<TodoModel[]>([])
-const todo = writable<TodoModel>({} as TodoModel)
+const todo = writable<TodoModel | null>(null)
 
 const getAll = async (query: QueryObject = {} as QueryObject) => {
 	try {
