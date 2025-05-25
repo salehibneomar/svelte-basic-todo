@@ -1,5 +1,6 @@
 <script lang="ts">
 	import '../app.css'
+	import { ToastContainer, FlatToast } from 'svelte-toasts'
 
 	const { children } = $props()
 
@@ -20,6 +21,11 @@
 	</nav>
 
 	<main class="container mx-auto flex-grow p-6">
+		<ToastContainer placement="bottom-center" theme="light" showProgress let:data>
+			<div class="solid-toast">
+				<FlatToast {data} />
+			</div>
+		</ToastContainer>
 		{@render children()}
 	</main>
 
@@ -27,3 +33,11 @@
 		<p>&copy; {getCurrentYear()} Todo App</p>
 	</footer>
 </div>
+
+<style>
+	.solid-toast {
+		background-color: white !important;
+		color: black !important;
+		border: none;
+	}
+</style>

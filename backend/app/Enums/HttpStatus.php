@@ -18,16 +18,16 @@ enum HttpStatus: int
     public function message(): string
     {
         return match ($this) {
-            self::OK => 'success',
-            self::CREATED => 'created',
-            self::NO_CONTENT => 'no content',
-            self::BAD_REQUEST => 'bad request',
-            self::UNAUTHORIZED => 'unauthorized',
-            self::FORBIDDEN => 'forbidden',
-            self::NOT_FOUND => 'not found',
-            self::INTERNAL_SERVER_ERROR => 'internal server error',
-            self::UNPROCESSABLE_ENTITY => 'unprocessable entity',
-            self::CONFLICT => 'conflict',
+            self::OK => 'Success',
+            self::CREATED => 'Created',
+            self::NO_CONTENT => 'No Content',
+            self::BAD_REQUEST => 'Bad Request',
+            self::UNAUTHORIZED => 'Unauthorized',
+            self::FORBIDDEN => 'Forbidden',
+            self::NOT_FOUND => 'Not Found',
+            self::INTERNAL_SERVER_ERROR => 'Internal Server Error',
+            self::UNPROCESSABLE_ENTITY => 'Unprocessable Entity',
+            self::CONFLICT => 'Conflict',
         };
     }
 }
