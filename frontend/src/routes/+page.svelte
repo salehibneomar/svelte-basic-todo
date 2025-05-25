@@ -2,32 +2,52 @@
 	import { onMount } from 'svelte'
 	import todoStore from '$lib/stores/todo-store'
 	import type { PaginationModel } from '$lib/types/pagination'
+	import type { TodoBaseModel } from '$lib/types/todo'
 
-	let loading = true
+	let { todos } = todoStore
+
 	let pagingData: PaginationModel = {
 		current_page: 1,
 		per_page: 10
 	} as PaginationModel
 
-	let todos = todoStore.todos
+	let formData: TodoBaseModel = {
+		title: ''
+	}
 
+	let loading = true
 	onMount(async () => {
 		await getAllTodos()
 		loading = false
 	})
 
+	const syncPagingData = (data: PaginationModel) => {
+		pagingData = { ...pagingData, ...data }
+	}
+
 	const getAllTodos = async () => {
-		loading = true
 		const response = await todoStore.getAll()
 		if (response) {
 			const { current_page, per_page, last_page, from, to, total } = response
 			syncPagingData({ current_page, per_page, last_page, from, to, total })
 		}
-		loading = false
 	}
 
-	const syncPagingData = (data: PaginationModel) => {
-		pagingData = { ...pagingData, ...data }
+	let submitting = false
+	const onSubmitForm = async () => {
+		submitting = true
+		const response = await todoStore.create(formData)
+		if (response) {
+			formData.title = ''
+		}
+		submitting = false
+	}
+
+	let deletingId: number | null = null
+	const onDeleteTodo = async (id: number) => {
+		deletingId = id
+		const response = await todoStore.remove(id)
+		deletingId = null
 	}
 </script>
 
@@ -35,15 +55,21 @@
 	{#if !loading}
 		<h1 class="mb-6 text-center text-3xl font-bold text-slate-800">Todo List</h1>
 
-		<form class="mb-6 flex gap-2">
+		<form class="mb-6 flex gap-2" on:submit|preventDefault={onSubmitForm}>
 			<input
 				type="text"
 				placeholder="Add a new todo..."
 				class="flex-1 rounded border border-slate-300 px-4 py-2 focus:ring-2 focus:ring-slate-400 focus:outline-none"
+				required
+				minlength="3"
+				pattern="^\S+$"
+				bind:value={formData.title}
+				disabled={submitting}
 			/>
 			<button
 				type="submit"
 				class="cursor-pointer rounded bg-slate-600 px-4 py-2 text-white hover:bg-slate-800"
+				disabled={submitting}
 			>
 				Add
 			</button>
@@ -58,20 +84,24 @@
 						<input
 							type="checkbox"
 							class="ml-2 accent-slate-700"
-							checked={Boolean(todo.is_completed)}
+							checked={Boolean(todo?.is_completed)}
 						/>
-						<span class={todo.is_completed ? 'text-slate-400 line-through' : 'text-slate-700'}
-							>{todo.title}</span
+						<span class={todo?.is_completed ? 'text-slate-400 line-through' : 'text-slate-700'}
+							>{todo?.title}</span
 						>
 					</div>
-					<button class="cursor-pointer text-red-500 hover:text-red-700" aria-label="Delete todo">
+					<button
+						on:click|capture={() => onDeleteTodo(todo?.id as number)}
+						class="cursor-pointer text-red-500 hover:text-red-700"
+						aria-label="Delete todo"
+						disabled={deletingId === todo?.id}
+					>
 						<i class="fa-solid fa-trash"></i>
 					</button>
 				</li>
 			{/each}
 		</ul>
 
-		<!-- Pagination -->
 		{#if pagingData.total > pagingData.per_page}
 			<nav class="mt-8 flex justify-center" aria-label="Pagination">
 				<ul class="inline-flex items-center -space-x-px text-sm">

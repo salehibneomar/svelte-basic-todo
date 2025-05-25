@@ -7,5 +7,5 @@ export interface TodoModel extends TodoBaseModel {
 export interface TodoBaseModel {
 	title: string
 	description?: string | null
-	is_completed: boolean
+	is_completed?: boolean
 }
