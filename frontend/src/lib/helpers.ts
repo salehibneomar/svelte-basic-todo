@@ -10,3 +10,12 @@ export const objectToApiQuery = (query: QueryObject): string => {
 		.join('&')
 	return params ? `?${params}` : ''
 }
+
+export const utcToLocalDateTime = (
+	utcString: string,
+	options?: Intl.DateTimeFormatOptions
+): string => {
+	if (!utcString) return ''
+	const date = new Date(utcString)
+	return date.toLocaleString(undefined, options)
+}

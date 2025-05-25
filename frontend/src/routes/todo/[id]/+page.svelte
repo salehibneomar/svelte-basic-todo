@@ -2,6 +2,7 @@
 	import { onMount } from 'svelte'
 	import { page } from '$app/state'
 	import todoStore from '$lib/stores/todo-store'
+	import { utcToLocalDateTime } from '$lib/helpers'
 
 	const paramTodoId = page.params.id
 
@@ -35,11 +36,11 @@
 				<div class="flex flex-col gap-1 text-xs text-slate-500">
 					<div>
 						<span class="font-semibold">Created:</span>
-						<span>{$todo.created_at}</span>
+						<span>{utcToLocalDateTime($todo.created_at ?? '')}</span>
 					</div>
 					<div>
 						<span class="font-semibold">Updated:</span>
-						<span>{$todo.updated_at}</span>
+						<span>{utcToLocalDateTime($todo.updated_at ?? '')}</span>
 					</div>
 				</div>
 			</div>
