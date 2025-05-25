@@ -1,9 +1,10 @@
 <script lang="ts">
 	import { onMount } from 'svelte'
 	import todoStore from '$lib/stores/todo-store'
-	import { goto } from '$app/navigation'
 	import type { PaginationModel } from '$lib/types/pagination'
 	import type { TodoBaseModel, TodoModel } from '$lib/types/todo'
+
+	import TodoListItem from '$lib/components/todo/TodoListItem.svelte';
 
 	let { todos } = todoStore
 
@@ -44,16 +45,16 @@
 		submitting = false
 	}
 
-	const onDeleteTodo = async (id: number) => {
-		const response = await todoStore.remove(id)
+	const onTodoDelete = async (id: number) => {
+		await todoStore.remove(id)
 	}
 
-	const onTodoStatusChange = async (id: number | string, is_completed: boolean) => {
+	const onTodoStatusChange = async (id: number, is_completed: boolean) => {
 		const payload = {
 			id,
 			is_completed
 		} as TodoModel
-		const response = await todoStore.update(payload)
+		await todoStore.update(payload)
 	}
 </script>
 
@@ -86,36 +87,11 @@
 		{:else}
 			<ul class="space-y-3">
 				{#each $todos as todo}
-					<li
-						class="flex items-center justify-between rounded bg-slate-100 px-4 py-0 transition-colors hover:bg-slate-200"
-					>
-						<input
-							type="checkbox"
-							class="accent-slate-700"
-							checked={Boolean(todo?.is_completed)}
-							on:change={(e) => {
-								const isCompleted = (e.target as HTMLInputElement).checked
-								onTodoStatusChange(todo?.id, isCompleted)
-							}}
-							tabindex="-1"
-						/>
-						<button
-							type="button"
-							class="ml-3 flex flex-1 cursor-pointer items-center gap-2 border-none bg-transparent py-2 text-left focus:outline-none"
-							on:click={() => goto(`/todo/${todo.id}`)}
-						>
-							<span class={todo?.is_completed ? 'text-slate-400 line-through' : 'text-slate-700'}>
-								{todo?.title}
-							</span>
-						</button>
-						<button
-							on:click={() => onDeleteTodo(todo?.id as number)}
-							class="cursor-pointer text-red-500 hover:text-red-700"
-							aria-label="Delete todo"
-						>
-							<i class="fa-solid fa-trash"></i>
-						</button>
-					</li>
+					<TodoListItem
+						todo={todo}
+						onStatusChange={onTodoStatusChange}
+						onDelete={onTodoDelete}
+					/>
 				{/each}
 			</ul>
 
@@ -127,7 +103,7 @@
 								type="button"
 								class="ms-0 flex h-8 items-center justify-center rounded-s border border-e-0 border-slate-300 bg-white px-2 leading-tight text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-700 focus:ring-2 focus:ring-slate-400 focus:outline-none"
 							>
-								Previous
+								<span aria-hidden="true">&lt;</span>
 							</button>
 						</li>
 
@@ -150,7 +126,7 @@
 								type="button"
 								class="flex h-8 items-center justify-center rounded-e border border-slate-300 bg-white px-2 leading-tight text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-700 focus:ring-2 focus:ring-slate-400 focus:outline-none"
 							>
-								Next
+								<span aria-hidden="true">&gt;</span>
 							</button>
 						</li>
 					</ul>
