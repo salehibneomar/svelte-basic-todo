@@ -8,12 +8,36 @@ importers:
 
   .:
     dependencies:
+      '@tailwindcss/forms':
+        specifier: ^0.5.9
+        version: 0.5.10(tailwindcss@4.1.7)
+      '@tailwindcss/typography':
+        specifier: ^0.5.15
+        version: 0.5.16(tailwindcss@4.1.7)
+      '@tailwindcss/vite':
+        specifier: ^4.0.0
+        version: 4.1.7(vite@6.3.5(jiti@2.4.2)(lightningcss@1.30.1))
       axios:
         specifier: ^1.9.0
         version: 1.9.0
+      flowbite:
+        specifier: ^3.1.2
+        version: 3.1.2(rollup@4.41.1)
+      flowbite-svelte:
+        specifier: ^1.4.3
+        version: 1.4.3(rollup@4.41.1)(svelte@5.33.2)(tailwindcss@4.1.7)
+      flowbite-svelte-icons:
+        specifier: ^2.2.0
+        version: 2.2.0(svelte@5.33.2)
+      svelte:
+        specifier: ^5.0.0
+        version: 5.33.2
       svelte-toasts:
         specifier: ^1.1.2
         version: 1.1.2
+      tailwindcss:
+        specifier: ^4.0.0
+        version: 4.1.7
     devDependencies:
       '@eslint/compat':
         specifier: ^1.2.5
@@ -30,15 +54,6 @@ importers:
       '@sveltejs/vite-plugin-svelte':
         specifier: ^5.0.0
         version: 5.0.3(svelte@5.33.2)(vite@6.3.5(jiti@2.4.2)(lightningcss@1.30.1))
-      '@tailwindcss/forms':
-        specifier: ^0.5.9
-        version: 0.5.10(tailwindcss@4.1.7)
-      '@tailwindcss/typography':
-        specifier: ^0.5.15
-        version: 0.5.16(tailwindcss@4.1.7)
-      '@tailwindcss/vite':
-        specifier: ^4.0.0
-        version: 4.1.7(vite@6.3.5(jiti@2.4.2)(lightningcss@1.30.1))
       '@testing-library/jest-dom':
         specifier: ^6.6.3
         version: 6.6.3
@@ -57,15 +72,6 @@ importers:
       eslint-plugin-svelte:
         specifier: ^3.0.0
         version: 3.9.0(eslint@9.27.0(jiti@2.4.2))(svelte@5.33.2)
-      flowbite:
-        specifier: ^3.1.2
-        version: 3.1.2(rollup@4.41.1)
-      flowbite-svelte:
-        specifier: ^1.4.3
-        version: 1.4.3(rollup@4.41.1)(svelte@5.33.2)(tailwindcss@4.1.7)
-      flowbite-svelte-icons:
-        specifier: ^2.2.0
-        version: 2.2.0(svelte@5.33.2)
       globals:
         specifier: ^16.0.0
         version: 16.2.0
@@ -81,15 +87,9 @@ importers:
       prettier-plugin-tailwindcss:
         specifier: ^0.6.11
         version: 0.6.11(prettier-plugin-svelte@3.4.0(prettier@3.5.3)(svelte@5.33.2))(prettier@3.5.3)
-      svelte:
-        specifier: ^5.0.0
-        version: 5.33.2
       svelte-check:
         specifier: ^4.0.0
         version: 4.2.1(picomatch@4.0.2)(svelte@5.33.2)(typescript@5.8.3)
-      tailwindcss:
-        specifier: ^4.0.0
-        version: 4.1.7
       typescript:
         specifier: ^5.0.0
         version: 5.8.3
