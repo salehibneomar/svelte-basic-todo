@@ -2,6 +2,7 @@
 	import { onMount } from 'svelte'
 	import todoStore from '$lib/stores/todo-store'
 	import type { PaginationModel } from '$lib/types/pagination'
+	import type { QueryObject } from '$lib/types/query'
 	import type { TodoBaseModel, TodoModel } from '$lib/types/todo'
 	import { Button, Modal } from "flowbite-svelte";
   	import { ExclamationCircleOutline } from "flowbite-svelte-icons";
@@ -12,7 +13,8 @@
 
 	let pagingData: PaginationModel = $state({
 		current_page: 1,
-		per_page: 10
+		per_page: 10,
+		last_page: 1
 	} as PaginationModel)
 
 	let formData: TodoBaseModel = $state({
@@ -29,8 +31,8 @@
 		pagingData = { ...pagingData, ...data }
 	}
 
-	const getAllTodos = async () => {
-		const response = await todoStore.getAll()
+	const getAllTodos = async (query: QueryObject = {} as QueryObject) => {
+		const response = await todoStore.getAll(query)
 		if (response) {
 			const { current_page, per_page, last_page, from, to, total } = response
 			syncPagingData({ current_page, per_page, last_page, from, to, total })
@@ -56,6 +58,7 @@
 	}
 
 	let toBeDeletedTodoId : number | null = $state(null)
+	let popupModal = $state(false)
 	const onTodoDelete = async (id: number) => {
 		toBeDeletedTodoId = id
 		popupModal = true
@@ -66,7 +69,10 @@
 		await todoStore.remove(toBeDeletedTodoId as number)
 	}
 
-	let popupModal = $state(false)
+	const onPaginationChange = async (page : number) => {
+		await getAllTodos({page} as QueryObject)
+	}
+
 </script>
 
 <div class="mx-auto mt-10 max-w-xl rounded-lg bg-white p-8 shadow-lg">
@@ -113,12 +119,14 @@
 							<button
 								type="button"
 								class="ms-0 flex h-8 items-center justify-center rounded-s border border-e-0 border-slate-300 bg-white px-2 leading-tight text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-700 focus:ring-2 focus:ring-slate-400 focus:outline-none"
+								onclick={()=>{onPaginationChange(pagingData.current_page-1)}}
+								disabled={pagingData.current_page === 1}
 							>
-								<span aria-hidden="true">&lt;</span>
+								<span aria-hidden="true">Previous</span>
 							</button>
 						</li>
 
-						{#each Array(pagingData.last_page) as _, index}
+						{#each Array(pagingData.last_page), index}
 							<li>
 								<button
 									type="button"
@@ -126,6 +134,7 @@
 							{+pagingData.current_page === index + 1
 										? 'bg-slate-600 font-bold text-white'
 										: 'bg-white text-slate-500 hover:bg-slate-100 hover:text-slate-700'}"
+										onclick={()=>{onPaginationChange(index+1)}}
 								>
 									{index + 1}
 								</button>
@@ -136,8 +145,10 @@
 							<button
 								type="button"
 								class="flex h-8 items-center justify-center rounded-e border border-slate-300 bg-white px-2 leading-tight text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-700 focus:ring-2 focus:ring-slate-400 focus:outline-none"
+								onclick={()=>{onPaginationChange(pagingData.current_page+1)}}
+								disabled={+pagingData.last_page === +pagingData.current_page}
 							>
-								<span aria-hidden="true">&gt;</span>
+								<span aria-hidden="true">Next</span>
 							</button>
 						</li>
 					</ul>
