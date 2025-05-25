@@ -1,4 +1,16 @@
 <script lang="ts">
+	import { onMount } from 'svelte'
+	import { page } from '$app/state'
+	import todoStore from '$lib/stores/todo-store'
+	import type { TodoModel } from '$lib/types/todo'
+
+	const paramTodoId = page.params.id
+
+	let loading = true
+	onMount(async () => {
+		await todoStore.getById(paramTodoId)
+		loading = false
+	})
 </script>
 
 <!-- Todo Details Page HTML Only -->
