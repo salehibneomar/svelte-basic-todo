@@ -1,6 +1,6 @@
 # Svelte Basic Todo App
 
-A full-stack Todo application with a Svelte frontend and a Laravel backend, using MySQL as the database. This project is organized into two main parts:
+A full-stack Todo application with a Svelte frontend and a Laravel backend, using MySQL as the database.
 
 [![Watch the video](https://img.youtube.com/vi/wdRq4HOY2vA/0.jpg)](https://youtu.be/wdRq4HOY2vA)
 
