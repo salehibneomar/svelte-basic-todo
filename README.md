@@ -76,9 +76,6 @@ svelte-basic-todo/
 
 ---
 
-[![Watch the video](https://img.youtube.com/vi/wdRq4HOY2vA/maxresdefault.jpg)](https://youtu.be/wdRq4HOY2vA)
-
-
 ## Features
 
 - CRUD
