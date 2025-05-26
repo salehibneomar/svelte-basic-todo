@@ -85,4 +85,8 @@ svelte-basic-todo/
 
 ---
 
+## Demo Video
+
+[![Watch the video](https://img.youtube.com/vi/wdRq4HOY2vA/0.jpg)](https://youtu.be/wdRq4HOY2vA)
+
 Feel free to use this as a reference!
