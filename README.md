@@ -2,6 +2,8 @@
 
 A full-stack Todo application with a Svelte frontend and a Laravel backend, using MySQL as the database. This project is organized into two main parts:
 
+[![Watch the video](https://img.youtube.com/vi/wdRq4HOY2vA/0.jpg)](https://youtu.be/wdRq4HOY2vA)
+
 ---
 
 ## Usage
@@ -84,9 +86,5 @@ svelte-basic-todo/
 - RESTful API with Laravel
 
 ---
-
-## Demo Video
-
-[![Watch the video](https://img.youtube.com/vi/wdRq4HOY2vA/0.jpg)](https://youtu.be/wdRq4HOY2vA)
 
 Feel free to use this as a reference!
