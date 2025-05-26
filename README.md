@@ -16,6 +16,7 @@ A full-stack Todo application with a Svelte frontend and a Laravel backend, usin
 ### Frontend
 
 - Install dependencies: `cd frontend && pnpm install`
+- Configure `.env` for constant variables
 - Start dev server: `pnpm run fire`
 
 ---
